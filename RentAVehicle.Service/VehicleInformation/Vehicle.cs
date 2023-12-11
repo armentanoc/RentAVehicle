@@ -1,5 +1,7 @@
 ﻿
 
+using System.Globalization;
+
 namespace RentAVehicle.Service.VehicleInformation
 {
     public class Vehicle
@@ -21,8 +23,8 @@ namespace RentAVehicle.Service.VehicleInformation
             this.brand = brand;
             this.model = model;
             this.color = color;
+            this.vehicleStatus = VehicleStatus.Available;
             id = IdGenerator.Make();
-            vehicleStatus = VehicleStatus.Available;
         }
 
         internal decimal GetDailyPrice()
@@ -32,7 +34,7 @@ namespace RentAVehicle.Service.VehicleInformation
 
         public override string ToString()
         {
-            return $"Marca = {brand}, Modelo = {model}, Tipo = {vehicleType}, Status = {vehicleStatus}, Cor = {color},  Diária = {dailyPrice}";
+            return $"Marca = {brand}, Modelo = {model}, Tipo = {vehicleType}, Status = {vehicleStatus}, Cor = {color},  Diária = {dailyPrice.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}";
         }
 
         public string GetBrand()

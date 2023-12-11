@@ -2,8 +2,7 @@
 {
     public enum VehicleStatus
     {
-        Available = 1,
-        Rented = 2,
-        UnderMaintenance = 3
+        Available = 0,
+        UnderMaintenance = 1
     }
 }

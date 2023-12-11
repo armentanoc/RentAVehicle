@@ -1,4 +1,6 @@
 ﻿
+using System.Globalization;
+
 namespace RentAVehicle.Service.People
 
 {
@@ -13,7 +15,7 @@ namespace RentAVehicle.Service.People
         }
         public override string ToString()
         {
-            return $"Nome = {GetName()}, Total de Reservas = {totalReservations}, Valor vendido = {amountOfSales}";
+            return $"Nome = {GetName()}, Total de Reservas = {totalReservations}, Valor vendido = {amountOfSales.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}";
         }
 
         public void IncreaseAmountOfSales(decimal newSale)

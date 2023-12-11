@@ -13,9 +13,11 @@ namespace RentAVehicle.Service.MakeReservation
         public static void PrintReservations(List<Reservation> reservationsList)
         {
             Console.WriteLine("\n===== Reservas =====");
+            int counter = 0;
             foreach (Reservation reservation in reservationsList)
             {
-                Console.WriteLine(reservation.ToString());
+                Console.WriteLine($"{counter} - {reservation.ToString()}");
+                counter++;
             }
         }
     }

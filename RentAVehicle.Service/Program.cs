@@ -23,11 +23,11 @@ namespace RentAVehicle.Service
             {
                 Console.Clear();
                 Console.WriteLine("===== Serviço de Aluguel de Veículos =====\n");
-                Console.WriteLine("1. Exibir veículos disponíveis");
+                Console.WriteLine("1. Exibir veículos disponíveis no período");
                 Console.WriteLine("2. Fazer uma reserva");
                 Console.WriteLine("3. Processar pagamento");
                 Console.WriteLine("4. Exibir reservas");
-                Console.WriteLine("5. Exibir veículos alugados");
+                Console.WriteLine("5. Exibir veículos em manutenção");
                 Console.WriteLine("6. Exibir informações dos pagamentos");
                 Console.WriteLine("7. Exibir informações dos clientes");
                 Console.WriteLine("8. Exibir informações dos vendedores");
@@ -39,7 +39,7 @@ namespace RentAVehicle.Service
                 switch (choice)
                 {
                     case "1":
-                        VehicleList.PrintAvailableVehicles(vehiclesList);
+                        PrintAvailableVehicles(vehiclesList);
                         break;
 
                     case "2":
@@ -55,7 +55,7 @@ namespace RentAVehicle.Service
                         break;
 
                     case "5":
-                        VehicleList.PrintRentedVehicles(vehiclesList);
+                        VehicleList.PrintUnderMaintenanceVehicles(vehiclesList);
                         break;
 
                     case "6":
@@ -88,60 +88,102 @@ namespace RentAVehicle.Service
             } while (!exitProgram);
         }
 
-        private static void ExecutePayment()
+        // payment methods
+        static void ExecutePayment()
         {
             Console.WriteLine("\n===== Processamento de Pagamento =====");
-            int reservationIndex = GetIndex("Reservas", reservationsList);
+            List<Reservation> notPaidReservations = NotPaidReservations();
 
-            Reservation selectedReservation = reservationsList[reservationIndex];
-
-            Payment payment = new Payment(selectedReservation);
-
-            Console.WriteLine("\nDetalhes do pagamento: " + payment.ToString());
-
-            Console.Write("\nQual o método de pagamento? (creditCard, debitCard, cash, pix): ");
-            PaymentMethodEnum paymentMethod;
-
-            while (!Enum.TryParse(Console.ReadLine(), true, out paymentMethod))
+            if (notPaidReservations.Count >= 1)
             {
-                Console.WriteLine("Método de pagamento inválido. Digite um método de pagamento válido (creditCard, debitCard, cash, pix).");
+                int reservationIndex = GetIndex("Reservas", notPaidReservations);
+
+                Reservation selectedReservation = notPaidReservations[reservationIndex]; // Use notPaidReservations list
+
+                Payment payment = new Payment(selectedReservation);
+
+                Console.WriteLine("\nDetalhes do pagamento: " + payment.ToString());
+
+                Console.Write("\nQual o método de pagamento? (creditCard, debitCard, cash, pix): ");
+                PaymentMethodEnum paymentMethod;
+
+                while (!Enum.TryParse(Console.ReadLine(), true, out paymentMethod))
+                {
+                    Console.WriteLine("Método de pagamento inválido. Digite um método de pagamento válido (creditCard, debitCard, cash, pix).");
+                }
+
+                payment.ExecutePayment(selectedReservation.GetStartDate(), paymentMethod);
+                paymentsList.Add(payment);
+                selectedReservation.SetIsPaid(true);
+
+                Console.WriteLine("\nPagamento executado com sucesso!");
             }
-
-            payment.ExecutePayment(selectedReservation.getStartDate(), paymentMethod);
-            paymentsList.Add(payment);
-
-            Console.WriteLine("\nPagamento executado com sucesso!");
         }
-        private static void CreateReservation()
+        static List<Reservation> NotPaidReservations()
         {
-            Console.WriteLine("\n===== Criar Reserva =====");
+            return reservationsList.Where(reservation => !reservation.IsPaid).ToList();
+        }
+
+        // reservation methods
+        static void CreateReservation()
+        {
+            Console.WriteLine("\n===== Fazer Reserva =====");
 
             int salespersonIndex = GetIndex("Vendedores", salespersonList);
             int clientIndex = GetIndex("Clientes", clientsList);
-            int vehicleIndex = GetIndex("Veículos", vehiclesList);
 
             DateTime startDate = GetStartDate();
             int numberOfDays = GetNumberOfDays();
             DateTime endDate = startDate.AddDays(numberOfDays);
 
-            Reservation reservation = new Reservation(
-                salespersonList[salespersonIndex],
-                vehiclesList[vehicleIndex],
-                clientsList[clientIndex],
-                startDate,
-                endDate
-            );
+            List<Vehicle> availableVehicles = GetAvailableVehicles(startDate, endDate);
 
-            reservationsList.Add(reservation);
-            Console.WriteLine("\nDetalhes da reserva: " + reservation.ToString());
+            if (availableVehicles.Count > 0)
+            {
+                int vehicleIndex = GetIndex("Veículos", availableVehicles);
+
+                Reservation reservation = new Reservation(
+                    salespersonList[salespersonIndex],
+                    availableVehicles[vehicleIndex],
+                    clientsList[clientIndex],
+                    startDate,
+                    endDate
+                );
+
+                reservationsList.Add(reservation);
+                Console.WriteLine("\nDetalhes da Reserva: " + reservation.ToString());
+            }
+            else
+            {
+                Console.WriteLine("\nNão há veículos disponíveis para o período informado.");
+            }
         }
-        private static DateTime GetStartDate()
+        static bool IsOverlappingReservation(DateTime startDate, DateTime endDate, Vehicle selectedVehicle)
+        {
+            foreach (Reservation existingReservation in reservationsList)
+            {
+                if (existingReservation.GetVehicle() == selectedVehicle)
+                {
+                    if (startDate < existingReservation.GetEndDate() && endDate > existingReservation.GetStartDate())
+                    {
+                        return true;
+                        // há overlapping no período desejado para o mesmo veículo
+                    }
+                }
+            }
+
+            // não há overlapping no período desejado para o mesmo veículo
+            return false;
+        }
+
+        // get methods
+        static DateTime GetStartDate()
         {
             DateTime startDate;
 
             while (true)
             {
-                Console.Write("Digite a Data de Início (DD/MM/YYYY): ");
+                Console.Write("\nDigite a Data de Início (DD/MM/YYYY): ");
                 string input = Console.ReadLine();
 
                 input = input.Replace("/", "").Replace("-", "");
@@ -156,13 +198,13 @@ namespace RentAVehicle.Service
                 Console.WriteLine("Data inválida. Por favor, digite uma data válida entre hoje e um ano a partir de agora.");
             }
         }
-        private static int GetNumberOfDays()
+        static int GetNumberOfDays()
         {
             int numberOfDays;
 
             while (true)
             {
-                Console.Write("Insira o número de diárias que deseja: ");
+                Console.Write("\nInsira o número de diárias que deseja: ");
                 if (int.TryParse(Console.ReadLine(), out numberOfDays) && numberOfDays > 0)
                 {
                     return numberOfDays;
@@ -171,7 +213,7 @@ namespace RentAVehicle.Service
                 Console.WriteLine("Número de diárias inválido. Por favor, insira um inteiro positivo.");
             }
         }
-        private static int GetIndex<T>(string typeOfList, List<T> specificList)
+        static int GetIndex<T>(string typeOfList, List<T> specificList)
         {
             int listSize = specificList.Count;
             int maxIndex = listSize - 1;
@@ -191,6 +233,44 @@ namespace RentAVehicle.Service
                 Console.WriteLine($"Erro. Por favor digite um índice válido (0 - {maxIndex}).");
             }
             return objectIndex;
+        }
+        static List<Vehicle> GetAvailableVehicles(DateTime startDate, DateTime endDate)
+        {
+            List<Vehicle> availableVehicles = new List<Vehicle>();
+
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if (!IsOverlappingReservation(startDate, endDate, vehicle) && vehicle.GetStatus() != VehicleStatus.UnderMaintenance)
+                {
+                    availableVehicles.Add(vehicle);
+                }
+            }
+
+            return availableVehicles;
+        }
+
+        //print methods
+        static void PrintAvailableVehicles(List<Vehicle> vehiclesList)
+        {
+            DateTime startDate = GetStartDate();
+            int numberOfDays = GetNumberOfDays();
+            DateTime endDate = startDate.AddDays(numberOfDays);
+
+            List<Vehicle> availableVehicles = GetAvailableVehicles(startDate, endDate);
+
+            if (availableVehicles.Count > 0)
+            {
+                Console.WriteLine("\nVeículos disponíveis para o período:");
+                foreach (Vehicle vehicle in availableVehicles)
+                {
+                    if(vehicle.GetStatus() != VehicleStatus.UnderMaintenance)
+                    Console.WriteLine(vehicle.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nNão há veículos disponíveis para o período informado.");
+            }
         }
     }
 }

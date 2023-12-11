@@ -1,5 +1,6 @@
 ﻿using RentAVehicle.Service.MakeReservation;
 using RentAVehicle.Service.VehicleInformation;
+using System.Globalization;
 
 namespace RentAVehicle.Service.ProcessPayments
 {
@@ -36,7 +37,7 @@ namespace RentAVehicle.Service.ProcessPayments
 
         public override string ToString()
         {
-            return $"Valor = {amount}, Data de Pagamento = {paymentDate}, Método de Pagamento = {paymentMethod}, Reserva = {reservation.GetId()}";
+            return $"Valor = {amount.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}, Data de Pagamento = {paymentDate}, Método de Pagamento = {paymentMethod}, Reserva = {reservation.GetId()}";
         }
     }
 }
