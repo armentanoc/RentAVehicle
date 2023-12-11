@@ -12,9 +12,20 @@ namespace RentAVehicle.Service.MakeReservation
         private Salesperson salesperson;
         private DateTime startDate;
         private DateTime endDate;
-        public bool IsPaid { get; private set; }
+        private bool _isPaid;
         private int totalDays;
 
+        public bool IsPaid { 
+            get {
+                return _isPaid;
+            }
+            private set {
+                if (_isPaid != value)
+                {
+                    _isPaid = value;
+                }
+            }
+        }
         public Reservation(Salesperson salesperson, Vehicle vehicle, Client client, DateTime startDate, DateTime endDate)
         {
             id = IdGenerator.Make();
@@ -74,7 +85,7 @@ namespace RentAVehicle.Service.MakeReservation
             return id;
         }
 
-        internal void SetIsPaid(bool isPaid)
+        internal void MarkAsPaid()
         {
             IsPaid = true;
         }

@@ -83,7 +83,7 @@ internal class ServiceManager
 
             payment.ExecutePayment(selectedReservation.GetStartDate(), paymentMethod);
             paymentsList.Add(payment);
-            selectedReservation.SetIsPaid(true);
+            selectedReservation.MarkAsPaid();
 
             Console.WriteLine("\nPagamento executado com sucesso!");
         }
