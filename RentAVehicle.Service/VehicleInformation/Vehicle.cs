@@ -1,6 +1,5 @@
-﻿using RentAVehicle.Service.PersonClasses;
-
-namespace RentAVehicle.Service.VehicleClasses
+﻿
+namespace RentAVehicle.Service.VehicleInformation
 {
     public class Vehicle
     {
@@ -10,23 +9,24 @@ namespace RentAVehicle.Service.VehicleClasses
         private string color;
         private string brand;
         private string model;
-        private VehicleType vehicleType;
+        private VehicleTypeEnum vehicleType;
         private VehicleStatus vehicleStatus;
         private decimal dailyPrice;
-        public Vehicle(VehicleType vehicleType, string brand, string model, string color, string licensePlate, decimal dailyPrice)
+        public Vehicle(VehicleTypeEnum vehicleType, string brand, string model, string color, string licensePlate, decimal dailyPrice)
         {
             this.licensePlate = licensePlate;
             this.vehicleType = vehicleType;
             this.dailyPrice = dailyPrice;
             this.brand = brand;
             this.model = model;
-            this.id = IdGenerator.Make();
-            this.vehicleStatus = VehicleStatus.Available;
+            this.color = color;
+            id = IdGenerator.Make();
+            vehicleStatus = VehicleStatus.Available;
         }
 
         internal decimal GetDailyPrice()
         {
-           return dailyPrice;
+            return dailyPrice;
         }
 
         public override string ToString()
@@ -36,22 +36,22 @@ namespace RentAVehicle.Service.VehicleClasses
 
         public string GetBrand()
         {
-            return this.brand;
+            return brand;
         }
 
         public string GetModel()
         {
-            return this.model;
+            return model;
         }
 
         public string GetId()
         {
-            return this.id;
+            return id;
         }
 
         public void SetStatus(VehicleStatus vehicleStatus)
         {
-            this.vehicleStatus=vehicleStatus;
+            this.vehicleStatus = vehicleStatus;
         }
     }
 }

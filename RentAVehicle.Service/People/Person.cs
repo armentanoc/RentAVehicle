@@ -1,4 +1,6 @@
-﻿namespace RentAVehicle.Service.PersonClasses
+﻿
+namespace RentAVehicle.Service.People
+
 {
     public class Person
     {
@@ -18,17 +20,17 @@
 
         public string GetPhone()
         {
-            return this.phone;
+            return phone;
         }
 
         public string GetName()
         {
-            return this.name;
+            return name;
         }
 
         public string GetId()
         {
-            return this.id;
+            return id;
         }
     }
 }

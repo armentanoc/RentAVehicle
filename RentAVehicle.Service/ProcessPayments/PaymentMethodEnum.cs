@@ -1,6 +1,6 @@
-﻿namespace RentAVehicle.Service.PaymentClasses
+﻿namespace RentAVehicle.Service.ProcessPayments
 {
-    public enum PaymentMethod
+    public enum PaymentMethodEnum
     {
         creditCard = 1,
         debitCard = 2,

@@ -1,8 +1,8 @@
-﻿using RentAVehicle.Service.PaymentClasses;
-using RentAVehicle.Service.PersonClasses;
-using RentAVehicle.Service.VehicleClasses;
+﻿using RentAVehicle.Service.People;
+using RentAVehicle.Service.ProcessPayments;
+using RentAVehicle.Service.VehicleInformation;
 
-namespace RentAVehicle.Service.ReservationClasses
+namespace RentAVehicle.Service.MakeReservation
 {
     public class Reservation
     {
@@ -34,7 +34,7 @@ namespace RentAVehicle.Service.ReservationClasses
 
         }
 
-        public void ExecutePayment(Salesperson salesperson, DateTime paymentDate, PaymentMethod paymentMethod, Reservation reservation)
+        public void ExecutePayment(Salesperson salesperson, DateTime paymentDate, PaymentMethodEnum paymentMethod, Reservation reservation)
         {
             Payment payment = new Payment(reservation);
             isPaid = true;

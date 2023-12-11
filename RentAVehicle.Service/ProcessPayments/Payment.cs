@@ -1,7 +1,7 @@
-﻿using RentAVehicle.Service.ReservationClasses;
-using RentAVehicle.Service.VehicleClasses;
+﻿using RentAVehicle.Service.MakeReservation;
+using RentAVehicle.Service.VehicleInformation;
 
-namespace RentAVehicle.Service.PaymentClasses
+namespace RentAVehicle.Service.ProcessPayments
 {
     public class Payment
     {
@@ -9,7 +9,7 @@ namespace RentAVehicle.Service.PaymentClasses
         private decimal amount;
         private Reservation reservation;
         private DateTime paymentDate;
-        private PaymentMethod paymentMethod;
+        private PaymentMethodEnum paymentMethod;
 
         public Payment(Reservation reservation)
         {
@@ -19,11 +19,11 @@ namespace RentAVehicle.Service.PaymentClasses
             decimal dailyPrice = vehicle.GetDailyPrice();
 
             this.reservation = reservation;
-            this.amount = totalDays * dailyPrice;
+            amount = totalDays * dailyPrice;
         }
 
-        public void ExecutePayment(DateTime paymentDate, PaymentMethod paymentMethod)
-        { 
+        public void ExecutePayment(DateTime paymentDate, PaymentMethodEnum paymentMethod)
+        {
             this.paymentDate = paymentDate;
             this.paymentMethod = paymentMethod;
             reservation.ExecutePayment(reservation.GetSalesPerson(), paymentDate, paymentMethod, reservation);

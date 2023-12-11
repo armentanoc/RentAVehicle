@@ -1,5 +1,6 @@
 ﻿
-namespace RentAVehicle.Service.PersonClasses
+namespace RentAVehicle.Service.People
+
 {
     public class Salesperson : Person
     {
@@ -12,7 +13,7 @@ namespace RentAVehicle.Service.PersonClasses
         }
         public override string ToString()
         {
-            return $"Matricula = {matricula}, Nome = {this.GetName()}, Total de Reservas = {totalReservations}, Valor vendido = {amountOfSales}";
+            return $"Matricula = {matricula}, Nome = {GetName()}, Total de Reservas = {totalReservations}, Valor vendido = {amountOfSales}";
         }
 
         public void IncreaseAmountOfSales(decimal newSale)

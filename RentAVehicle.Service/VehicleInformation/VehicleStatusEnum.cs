@@ -1,4 +1,4 @@
-﻿namespace RentAVehicle.Service.VehicleClasses
+﻿namespace RentAVehicle.Service.VehicleInformation
 {
     public enum VehicleStatus
     {
