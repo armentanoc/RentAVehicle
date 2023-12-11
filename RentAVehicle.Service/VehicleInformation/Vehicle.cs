@@ -1,4 +1,5 @@
 ﻿
+
 namespace RentAVehicle.Service.VehicleInformation
 {
     public class Vehicle
@@ -31,7 +32,7 @@ namespace RentAVehicle.Service.VehicleInformation
 
         public override string ToString()
         {
-            return $"Id = {id}, Marca = {brand}, Modelo = {model}, Tipo = {vehicleType}, Status = {vehicleStatus}";
+            return $"Marca = {brand}, Modelo = {model}, Tipo = {vehicleType}, Status = {vehicleStatus}, Cor = {color},  Diária = {dailyPrice}";
         }
 
         public string GetBrand()
@@ -52,6 +53,11 @@ namespace RentAVehicle.Service.VehicleInformation
         public void SetStatus(VehicleStatus vehicleStatus)
         {
             this.vehicleStatus = vehicleStatus;
+        }
+
+        public VehicleStatus GetStatus()
+        {
+            return vehicleStatus;
         }
     }
 }

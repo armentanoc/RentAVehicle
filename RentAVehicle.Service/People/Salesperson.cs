@@ -13,7 +13,7 @@ namespace RentAVehicle.Service.People
         }
         public override string ToString()
         {
-            return $"Matricula = {matricula}, Nome = {GetName()}, Total de Reservas = {totalReservations}, Valor vendido = {amountOfSales}";
+            return $"Nome = {GetName()}, Total de Reservas = {totalReservations}, Valor vendido = {amountOfSales}";
         }
 
         public void IncreaseAmountOfSales(decimal newSale)

@@ -36,7 +36,7 @@ namespace RentAVehicle.Service.ProcessPayments
 
         public override string ToString()
         {
-            return $"Reservation = {reservation}, Amount = {amount}, PaymentDate = {paymentDate}, paymentMethod = {paymentMethod}";
+            return $"Valor = {amount}, Data de Pagamento = {paymentDate}, Método de Pagamento = {paymentMethod}, Reserva = {reservation.GetId()}";
         }
     }
 }

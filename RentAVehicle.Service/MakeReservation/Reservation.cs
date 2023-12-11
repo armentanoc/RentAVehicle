@@ -53,12 +53,22 @@ namespace RentAVehicle.Service.MakeReservation
 
         public override string ToString()
         {
-            return $"Veículo = {vehicle.GetBrand()}, {vehicle.GetModel()}, {vehicle.GetId()}, isPaid = {isPaid}, totalDays = {totalDays}, id = {id}";
+            return $"Veículo = {vehicle.GetBrand()}, Modelo = {vehicle.GetModel()}, Está pago = {isPaid}, Data de Início = {startDate}, " +
+                $"Data Final = {endDate}, Dias Totais = {totalDays}, Vendedor = {salesperson.GetName()}, Cliente = {client.GetName()}";
         }
 
         public Salesperson GetSalesPerson()
         {
             return salesperson;
+        }
+
+        public DateTime getStartDate()
+        {
+            return startDate;
+        }
+        public string GetId()
+        {
+            return id;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace RentAVehicle.Service.People
 
         public override string ToString()
         {
-            return $"Nome = {GetName()}, Telefone = {GetPhone()}, Id = {GetId()}";
+            return $"Nome = {GetName()}, Telefone = {GetPhone()}, Email = {GetEmail()}";
         }
     }
 }

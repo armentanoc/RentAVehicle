@@ -1,4 +1,8 @@
 ﻿
+
+
+using System.Diagnostics.Metrics;
+
 namespace RentAVehicle.Service.VehicleInformation
 {
     internal class VehicleList
@@ -24,6 +28,27 @@ namespace RentAVehicle.Service.VehicleInformation
             vehicleList.Add(vehicle);
 
             return vehicleList;
+        }
+        public static void PrintAvailableVehicles(List<Vehicle> vehiclesList)
+        {
+            Console.WriteLine("\n===== Veículos Disponíveis =====");
+        
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if(vehicle.GetStatus().Equals(VehicleStatus.Available))
+                Console.WriteLine(vehicle.ToString());
+            }
+        }
+
+        public static void PrintRentedVehicles(List<Vehicle> vehiclesList)
+        {
+            Console.WriteLine("\n===== Rented Vehicles =====");
+
+            foreach (Vehicle vehicle in vehiclesList)
+            {
+                if (vehicle.GetStatus().Equals(VehicleStatus.Rented))
+                    Console.WriteLine(vehicle.ToString());
+            }
         }
     }
 }

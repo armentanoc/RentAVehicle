@@ -28,6 +28,10 @@ namespace RentAVehicle.Service.People
             return name;
         }
 
+        public string GetEmail()
+        {
+            return email;
+        }
         public string GetId()
         {
             return id;
