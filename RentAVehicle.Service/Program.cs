@@ -1,8 +1,7 @@
-﻿
-using RentAVehicle.Service.PersonClasses;
-using RentAVehicle.Service.VehicleClasses;
-using RentAVehicle.Service.PaymentClasses;
-using RentAVehicle.Service.ReservationClasses;
+﻿using RentAVehicle.Service.VehicleInformation;
+using RentAVehicle.Service.ProcessPayments;
+using RentAVehicle.Service.People;
+using RentAVehicle.Service.MakeReservation;
 
 namespace RentAVehicle.Service
 {
@@ -11,35 +10,31 @@ namespace RentAVehicle.Service
         static void Main(string[] args)
         {
             List<Vehicle> vehiclesList = VehicleList.Generate();
-
-            Client client =
-                new Client("Ana Carolina", "71991562955", "armentanocarolina@gmail.com");
-
-            Salesperson salesperson =
-                new Salesperson("Ingryd", "71984535950", "eingrydalves@gmail.com");
-
-            Console.WriteLine("\nCliente: " + client.ToString());
-            Console.WriteLine("\nVendedor antes da reserva: " + salesperson.ToString());
+            List<Client> clientsList = ClientList.Generate();
+            List<Salesperson> salespersonList = SalespersonList.Generate();
+           
+            Console.WriteLine("\nCliente: " + clientsList[0].ToString());
+            Console.WriteLine("\nVendedor antes da reserva: " + salespersonList[0].ToString());
 
             DateTime startDate = DateTime.Today;
             DateTime endDate = startDate.AddDays(5);
 
-            Reservation reservation = new Reservation(salesperson, vehiclesList[0], client, startDate, endDate);
+            Reservation reservation = new Reservation(salespersonList[0], vehiclesList[0], clientsList[0], startDate, endDate);
             Console.WriteLine("\nReserva: " + reservation.ToString());
             
             PrintAvailableVehicles(vehiclesList);
        
-            Console.WriteLine("\nVendedor após a reserva e antes do pagamento: " + salesperson.ToString());
+            Console.WriteLine("\nVendedor após a reserva e antes do pagamento: " + salespersonList[0].ToString());
 
             Payment payment = new Payment(reservation);
 
             Console.WriteLine("\nObjeto pagamento antes de executar/efetuar: " + payment.ToString());
             Console.WriteLine("\nValor a pagar: " + payment.GetAmount());
             
-            payment.ExecutePayment(startDate, PaymentMethod.creditCard);
+            payment.ExecutePayment(startDate, PaymentMethodEnum.creditCard);
             Console.WriteLine("\nObjeto pagamento após executar/efetuar: " + payment.ToString());
 
-            Console.WriteLine("\nVendedor após a reserva e depois do pagamento: " + salesperson.ToString());
+            Console.WriteLine("\nVendedor após a reserva e depois do pagamento: " + salespersonList[0].ToString());
 
         }
 
