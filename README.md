@@ -16,3 +16,6 @@ To run the application, follow these steps:
 2. Open the project in your preferred C#/.NET development environment.
 3. Run the program.
 4. Interact with the menu to perform various actions, such as creating a reservation, processing payments, and viewing available vehicles.
+
+## Demo Video
+https://github.com/armentanoc/RentAVehicle/assets/88147887/e041eafa-edba-4566-9781-8abbd197ccb0
